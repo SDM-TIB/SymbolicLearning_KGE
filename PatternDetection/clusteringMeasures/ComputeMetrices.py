@@ -17,7 +17,7 @@ def get_measure(cls_folder, f_model):
 # threshold = [50, 52, 55, 57, 60, 63, 65, 70, 80, 85, 87]
 # model_list = ['TransH', 'DistMult', 'TransE']
 
-def computeMetric(model_list, threshold):
+def run(model_list, threshold):
     for m in model_list:
         # file_address = 'clusteringMeasures/'+m+'/'
 

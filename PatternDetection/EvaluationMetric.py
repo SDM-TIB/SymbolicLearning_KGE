@@ -8,6 +8,8 @@ from math import pi
 
 
 def get_measure_values(cls_addres, matrix_address, cls_measures, metric):
+    static = 16
+    n_metric = 5
     onlyfiles = [os.path.join(cls_addres + 'clusters/', f) for f in listdir(cls_addres + 'clusters/') if
                  isfile(join(cls_addres + 'clusters/', f))]
     n_cls = len(onlyfiles)
@@ -35,8 +37,8 @@ def radar_plot(metric_semep, metric_met, metric_km, key):
     # df = pd.DataFrame(columns=['group', 'InvC', 'InvTC', 'Co'])
     # === Baseline
     df.loc[0] = ['SemEP'] + metric_semep
-    df.loc[1] = ['METIS'] + metric_met
-    df.loc[2] = ['KMeans'] + metric_km
+    # df.loc[1] = ['METIS'] + metric_met
+    df.loc[1] = ['KMeans'] + metric_km
     # df.loc[0] = ['SemEP'] + [metric_semep[0], metric_semep[2], metric_semep[4]]
     # df.loc[1] = ['METIS'] + [metric_met[0], metric_met[2], metric_met[4]]
     # df.loc[2] = ['KMeans'] + [metric_km[0], metric_km[2], metric_km[4]]
@@ -79,13 +81,13 @@ def radar_plot(metric_semep, metric_met, metric_km, key):
     ax.fill(angles, values, alpha=0.1, color='#264653')
 
     # Ind2
-    values = df.loc[1].drop('group').values.flatten().tolist()
-    values += values[:1]
-    ax.plot(angles, values, color='#2A9D8F', linewidth=2, linestyle='solid', label="METIS")
-    ax.fill(angles, values, alpha=0.1, color='#2A9D8F')
+    # values = df.loc[1].drop('group').values.flatten().tolist()
+    # values += values[:1]
+    # ax.plot(angles, values, color='#2A9D8F', linewidth=2, linestyle='solid', label="METIS")
+    # ax.fill(angles, values, alpha=0.1, color='#2A9D8F')
 
     # Ind3
-    values = df.loc[2].drop('group').values.flatten().tolist()
+    values = df.loc[1].drop('group').values.flatten().tolist()
     values += values[:1]
     ax.plot(angles, values, color='#E9C46A', linewidth=2, linestyle='solid', label="KMeans")
     ax.fill(angles, values, alpha=0.1, color='#E9C46A')
@@ -161,55 +163,41 @@ def radar_plot(metric_semep, metric_met, metric_km, key):
 #         fig.savefig('evaluation_metric/' + key + '.pdf', format='pdf', bbox_inches='tight')
 #         plt.close(fig)
 
+def GenerateRadarPlot(model_list, threshold):
+    cls_measure = 'clusteringMeasures/'
+    for model in model_list:
+        matrix_address = cls_measure + model + '/'
+        for th in threshold:
+            metric_semep = [0, 0, 0, 0, 0]
+            # metric_met = [0, 0, 0, 0, 0]
+            metric_km = [0, 0, 0, 0, 0]
+            f_semep = 'SemEP_' + str(th)
+            # f_metis = 'METIS_' + str(th)
+            f_kmeans = 'Kmeans_' + str(th)
+            cls_address = matrix_address + f_semep + '/'
+            # cls_address_metis = matrix_address + f_metis + '/'
+            cls_address_km = matrix_address + f_kmeans + '/'
 
-cls_measure = 'clusteringMeasures/'
-k = 5
-static = 16
-n_metric = 5
-dicc_metric = {}
-threshold = [50, 52, 55, 57, 60, 63, 65, 70, 80, 85, 87]
-model_list = ['TransH', 'RotatE']
-for model in model_list:
-    # metric_km = [0, 0, 0, 0, 0]
-    matrix_address = cls_measure + model + '/'
-    # cls_address_km = matrix_address + 'Kmeans' + '/'
-    # cls_measures_km = pd.read_csv(cls_address_km + model + '.txt', delimiter=",")
-    # metric_km = get_measure_values(cls_address_km, matrix_address, cls_measures_km, metric_km)
-    # with open('evaluation_metric/Kmeans' + model + '.txt', "w") as f:
-    #     f.write(str(metric_km) + "\n")
-    for th in threshold:
-        metric_semep = [0, 0, 0, 0, 0]
-        metric_met = [0, 0, 0, 0, 0]
-        metric_km = [0, 0, 0, 0, 0]
-        f_semep = 'SemEP_' + str(th)
-        f_metis = 'METIS_' + str(th)
-        f_kmeans = 'Kmeans_' + str(th)
-        cls_address = matrix_address + f_semep + '/'
-        cls_address_metis = matrix_address + f_metis + '/'
-        cls_address_km = matrix_address + f_kmeans + '/'
-
-        # cls_addres_metis = cls_measure + 'METIS' + str(key) + str(fold) + '/'
-        # folder_metis = 'METIS' + str(key) + str(fold)
-        try:
-            cls_measures_semep = pd.read_csv(cls_address + model + '.txt', delimiter=",")
-        except Exception:
-            continue
-        try:
-            cls_measures_met = pd.read_csv(cls_address_metis + model + '.txt', delimiter=",")
-        except Exception:
-            continue
-        cls_measures_km = pd.read_csv(cls_address_km + model + '.txt', delimiter=",")
-        metric_semep = get_measure_values(cls_address, matrix_address, cls_measures_semep, metric_semep)
-        metric_met = get_measure_values(cls_address_metis, matrix_address, cls_measures_met, metric_met)
-        metric_km = get_measure_values(cls_address_km, matrix_address, cls_measures_km, metric_km)
-        with open('evaluation_metric/' + f_semep + model + '.txt', "w") as f:
-            f.write(str(metric_semep) + "\n")
-        with open('evaluation_metric/' + f_metis + model + '.txt', "w") as f:
-            f.write(str(metric_met) + "\n")
-        with open('evaluation_metric/' + f_kmeans + model + '.txt', "w") as f:
-            f.write(str(metric_km) + "\n")
-        radar_plot(metric_semep, metric_met, metric_km, key=str(th) + model)
-        plt.cla()
+            try:
+                cls_measures_semep = pd.read_csv(cls_address + model + '.txt', delimiter=",")
+            except Exception:
+                continue
+            # try:
+            #     cls_measures_met = pd.read_csv(cls_address_metis + model + '.txt', delimiter=",")
+            # except Exception:
+            #     continue
+            cls_measures_km = pd.read_csv(cls_address_km + model + '.txt', delimiter=",")
+            metric_semep = get_measure_values(cls_address, matrix_address, cls_measures_semep, metric_semep)
+            # metric_met = get_measure_values(cls_address_metis, matrix_address, cls_measures_met, metric_met)
+            metric_km = get_measure_values(cls_address_km, matrix_address, cls_measures_km, metric_km)
+            with open('evaluation_metric/' + f_semep + model + '.txt', "w") as f:
+                f.write(str(metric_semep) + "\n")
+            # with open('evaluation_metric/' + f_metis + model + '.txt', "w") as f:
+            #     f.write(str(metric_met) + "\n")
+            with open('evaluation_metric/' + f_kmeans + model + '.txt', "w") as f:
+                f.write(str(metric_km) + "\n")
+            radar_plot(metric_semep, metric_met, metric_km, key=str(th) + model)
+            plt.cla()
 
 
 
