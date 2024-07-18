@@ -18,6 +18,7 @@ from sklearn.tree import _tree, DecisionTreeClassifier
 from IPython.display import display, HTML
 from sklearn.model_selection import RandomizedSearchCV
 from sklearn.model_selection import GridSearchCV
+from sklearn.metrics.pairwise import cosine_similarity
 
 
 def density_plot(list_sim, path_plot):
@@ -69,27 +70,25 @@ def normalize_matrix(sim_matrix):
     return sim_matrix
 
 
-def matrix_similarity(new_df, f_dist, th):
-    array = new_df.set_index('ClinicalRecord')
-    entity = list(array.index.values)
-    sim_matrix = pd.DataFrame(index=entity, columns=entity)
-    sim_matrix = sim_matrix.fillna(0.0)
-    list_sim = []
-
-    for index, row in array.iterrows():
-        for indexC, rowC in array.iterrows():
-            sim = f_dist(row.values, rowC.values)
-            sim = round(sim, 5)
-            sim_matrix.at[index, indexC] = sim
-            if index == indexC:
-                continue
-            list_sim.append(sim)
-
-    threshold = np.percentile(list_sim, th)
+def matrix_similarity(embedding, th, complex_numb):
+    df = embedding.set_index('ClinicalRecord')
+    # Extract the vectors from the DataFrame
+    vectors = df.values
+    # Compute the cosine similarity matrix
+    similarity_matrix = cosine_similarity(vectors)
+    # Scale the values to the range [0, 1]
+    similarity_matrix = (similarity_matrix + 1) / 2
+    # To create a new DataFrame with the similarity matrix
+    similarity_df = pd.DataFrame(similarity_matrix, index=df.index, columns=df.index)
+    # Convert DataFrame to NumPy array
+    arr = similarity_df.values
+    # Extract the lower triangular part of the array, excluding the diagonal
+    lower_triangular = np.tril(arr, k=-1)
+    # Extract the lower diagonal values (excluding zeros)
+    lower_diag_values = lower_triangular[lower_triangular != 0]
+    threshold = np.percentile(lower_diag_values, th)
     print("percentil", threshold)
-    #     for col in sim_matrix.columns:
-    #         sim_matrix.loc[sim_matrix[col] < threshold, [col]] = 0
-    return sim_matrix, threshold, list_sim
+    return similarity_df, threshold, lower_diag_values
 
 
 # === Save cosine similarity matrix with the structure SemEP need
@@ -262,32 +261,34 @@ def plot_cluster(num_cls, df, n, scale=False):
     new_df['c'] = new_df.cluster.map(color_dictionary)
 
     new_df['label'] = 'o'
-    new_df.loc[new_df.Relapse == 'entity:No_Progression', 'label'] = '*'
-    new_df.loc[new_df.Relapse == 'entity:Progression', 'label'] = '.'
-    new_df.loc[new_df.Relapse == 'entity:Relapse', 'label'] = '<'
-    #####PLOT#####
-    from matplotlib.lines import Line2D
-    fig, ax = plt.subplots(1, figsize=(8, 8))
-    # plot data
-    pca = PCA(n_components=2).fit(X)
-    dim_reduction = pca.transform(X)
-    #     plt.scatter(dim_reduction[:, 0], dim_reduction[:, 1], c=new_df.c, marker=new_df.label, alpha=0.6, s=50)
-    scatter = mscatter(dim_reduction[:, 0], dim_reduction[:, 1], c=new_df.c, s=50, m=new_df.label)
+    new_df.loc[new_df.Relapse == 'No_Progression', 'label'] = '*'
+    new_df.loc[new_df.Relapse == 'Progression', 'label'] = '.'
+    new_df.loc[new_df.Relapse == 'Relapse', 'label'] = '<'
+    if num_cls<15:
+        #####PLOT#####
+        from matplotlib.lines import Line2D
+        fig, ax = plt.subplots(1, figsize=(8, 8))
+        # plot data
+        pca = PCA(n_components=2).fit(X)
+        dim_reduction = pca.transform(X)
+        #     plt.scatter(dim_reduction[:, 0], dim_reduction[:, 1], c=new_df.c, marker=new_df.label, alpha=0.6, s=50)
+        scatter = mscatter(dim_reduction[:, 0], dim_reduction[:, 1], c=new_df.c, s=50, m=new_df.label)
 
-    # create a list of legend elemntes
-    ## markers / records
-    legend_elements = [Line2D([0], [0], marker='o', color='w', label='Cluster {}'.format(i + 1),
-                              markerfacecolor=mcolor, markersize=10) for i, mcolor in enumerate(col)]
-    # plot legend
-    plt.legend(handles=legend_elements, loc='upper right', fontsize=16)
-    # title and labels
-    plt.title('Clusters of ClinicalRecords', loc='left', fontsize=22)
-    plt.savefig(fname=n + "KMeans.pdf", format='pdf', bbox_inches='tight')
-    # plt.show()
+        # create a list of legend elemntes
+        ## markers / records
+        legend_elements = [Line2D([0], [0], marker='o', color='w', label='Cluster {}'.format(i + 1),
+                                  markerfacecolor=mcolor, markersize=10) for i, mcolor in enumerate(col)]
+        # plot legend
+        plt.legend(handles=legend_elements, loc='upper right', fontsize=16)
+        # title and labels
+        plt.title('Clusters of ClinicalRecords', loc='left', fontsize=22)
+        plt.savefig(fname=n + "KMeans.pdf", format='pdf', bbox_inches='tight')
+        # plt.show()
+        plt.close()
     return new_df, cls_report
 
 
-def plot_semEP(num_cls, df, path_plot, name, scale=False):
+def plot_semEP(num_cls, df, path_plot, name, complex_numb, scale=False):
     new_df = df.copy()
     X = new_df.iloc[:, :-2]
     # To scale the data
@@ -304,9 +305,9 @@ def plot_semEP(num_cls, df, path_plot, name, scale=False):
     new_df['c'] = new_df.cluster.map(color_dictionary)
 
     new_df['label'] = 'o'
-    new_df.loc[new_df.Relapse == 'entity:No_Progression', 'label'] = '*'
-    new_df.loc[new_df.Relapse == 'entity:Progression', 'label'] = '.'
-    new_df.loc[new_df.Relapse == 'entity:Relapse', 'label'] = '<'
+    new_df.loc[new_df.Relapse == 'No_Progression', 'label'] = '*'
+    new_df.loc[new_df.Relapse == 'Progression', 'label'] = '.'
+    new_df.loc[new_df.Relapse == 'Relapse', 'label'] = '<'
     #####PLOT#####
     from matplotlib.lines import Line2D
     fig, ax = plt.subplots(1, figsize=(8, 8))
@@ -334,7 +335,7 @@ def plot_treatment(df, name):
     new_df = df.copy()
     X = new_df.iloc[:, :-2]
     col = [mcolors.CSS4_COLORS['brown'], mcolors.CSS4_COLORS['lightcoral'], mcolors.CSS4_COLORS['olive'], mcolors.CSS4_COLORS['lime']]
-    index = ['entity:No_Progression', 'entity:Progression', 'entity:Relapse', 'entity:UnKnown']
+    index = ['No_Progression', 'Progression', 'Relapse', 'UnKnown']
     #     # index = ['test', 'train']
     color_dictionary = dict(zip(index, col))
     new_df['c'] = new_df.Relapse.map(color_dictionary)

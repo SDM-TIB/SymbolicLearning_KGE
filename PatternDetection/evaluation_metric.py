@@ -168,9 +168,7 @@ static = 16
 n_metric = 5
 dicc_metric = {}
 threshold = [50, 52, 55, 57, 60, 63, 65, 70, 80, 85, 87]
-model_list = ['DistMult', 'TransE', 'TransH']
-# threshold = [20, 22, 25, 27, 30, 32, 35, 37, 40, 42, 45]
-# model_list = ['TransH']
+model_list = ['TransH', 'RotatE']
 for model in model_list:
     # metric_km = [0, 0, 0, 0, 0]
     matrix_address = cls_measure + model + '/'
