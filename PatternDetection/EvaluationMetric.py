@@ -31,7 +31,7 @@ def get_measure_values(cls_addres, matrix_address, cls_measures, metric):
     return metric
 
 
-def radar_plot(metric_semep, metric_met, metric_km, key):
+def radar_plot(metric_semep, metric_km, key):
     # Set data
     df = pd.DataFrame(columns=['group', 'InvC', 'P', 'InvTC', 'M', 'Co'])
     # df = pd.DataFrame(columns=['group', 'InvC', 'InvTC', 'Co'])
@@ -196,7 +196,7 @@ def GenerateRadarPlot(model_list, threshold):
             #     f.write(str(metric_met) + "\n")
             with open('evaluation_metric/' + f_kmeans + model + '.txt', "w") as f:
                 f.write(str(metric_km) + "\n")
-            radar_plot(metric_semep, metric_met, metric_km, key=str(th) + model)
+            radar_plot(metric_semep, metric_km, key=str(th) + model)
             plt.cla()
 
 
