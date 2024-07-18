@@ -93,7 +93,7 @@ def radar_plot(metric_semep, metric_km, key):
     ax.fill(angles, values, alpha=0.1, color='#E9C46A')
 
     # Add legend
-    plt.legend(bbox_to_anchor=(1.15, 1.19), ncol=3, prop={"size": 13, 'weight': 'bold'},
+    plt.legend(bbox_to_anchor=(1.15, 1.19), ncol=2, prop={"size": 13, 'weight': 'bold'},
                framealpha=0.0)  # loc='upper right', bbox_to_anchor=(0.1, 0.1)
 
     # ax.set_facecolor("linen")  # honeydew
