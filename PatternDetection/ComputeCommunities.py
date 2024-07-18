@@ -208,7 +208,7 @@ def run(kg_name, target_predicate, model_list, threshold):
         path_plot = '../Plots/'+kg_name+'/' + m + '/'
         for th in threshold:
             cls_address = file_address + 'SemEP_' + str(th) + '/'
-            cls_address_metis = file_address + 'METIS_' + str(th) + '/'
+            # cls_address_metis = file_address + 'METIS_' + str(th) + '/'
     
             update_cluster_folder(cls_address)
             """Create similarity matrix of Donors"""
@@ -220,10 +220,10 @@ def run(kg_name, target_predicate, model_list, threshold):
             """Execute SemEP"""
             num_cls = call_semEP(percentile, cls_address, file_address)
             """METIS"""
-            update_cluster_folder(cls_address_metis)
-            if num_cls > 1:
-                nodes = METIS_Undirected_MAX_based_similarity_graph(sim_matrix, cls_address_metis)
-                call_metis(num_cls, nodes, cls_address_metis)
+            # update_cluster_folder(cls_address_metis)
+            # if num_cls > 1:
+            #     nodes = METIS_Undirected_MAX_based_similarity_graph(sim_matrix, cls_address_metis)
+            #     call_metis(num_cls, nodes, cls_address_metis)
             """Labeling donors in the matrix"""
             sim_matrix = sim_matrix.merge(target, left_index=True, right_on='ClinicalRecord', suffixes=('_df1', '_df2'))
     
