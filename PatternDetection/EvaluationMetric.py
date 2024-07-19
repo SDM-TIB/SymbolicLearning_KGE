@@ -5,6 +5,7 @@ from os import listdir
 import numpy as np
 import matplotlib.pyplot as plt
 from math import pi
+import re
 
 
 def get_measure_values(cls_addres, matrix_address, cls_measures, metric):
@@ -103,66 +104,14 @@ def radar_plot(metric_semep, metric_km, key):
     plt.close()
 
 
-# def radar_plot(metric_semep, metric_met, metric_km, key):
-#     # Optionally use different styles for the graph
-#     # Gallery: http://tonysyu.github.io/raw_content/matplotlib-style-gallery/gallery.html
-#     # import matplotlib
-#     # matplotlib.style.use('dark_background')  # interesting: 'bmh' / 'ggplot' / 'dark_background'
-#
-#     class Radar(object):
-#         def __init__(self, figure, title, labels, rect=None):
-#             if rect is None:
-#                 rect = [0.05, 0.05, 1.0, 1.0]
-#
-#             self.n = len(title)
-#             self.angles = np.arange(0, 360, 360.0 / self.n)
-#
-#             self.axes = [figure.add_axes(rect, projection='polar', label='axes%d' % i) for i in range(self.n)]
-#
-#             self.ax = self.axes[0]
-#             self.ax.set_thetagrids(self.angles, labels=title, fontsize=14)
-#
-#             for ax in self.axes[1:]:
-#                 ax.patch.set_visible(False)
-#                 ax.grid(False)
-#                 ax.xaxis.set_visible(False)
-#
-#             for ax, angle, label in zip(self.axes, self.angles, labels):
-#                 ax.set_rgrids(range(0, 10), angle=angle, labels=label)
-#                 ax.spines['polar'].set_visible(False)
-#                 ax.set_ylim(0, 10)
-#
-#         def plot(self, values, *args, **kw):
-#             angle = np.deg2rad(np.r_[self.angles, self.angles[0]])
-#             values = np.r_[values, values[0]]
-#             self.ax.plot(angle, values, *args, **kw)
-#             self.ax.fill(angle, values, 'r', alpha=0.1)
-#
-#     if __name__ == '__main__':
-#         fig = plt.figure(figsize=(5, 5))
-#
-#         tit = ['InvC', 'P', 'InvTC', 'M', 'Co']  # 12x
-#
-#         lab = [
-#             ['0', '0.1', '0.2', '0.3', '0.4', '0.5', '0.6', '0.7', '0.8', '0.9'],
-#             ['0', '0.1', '0.2', '0.3', '0.4', '0.5', '0.6', '0.7', '0.8', '0.9'],
-#             ['0', '0.1', '0.2', '0.3', '0.4', '0.5', '0.6', '0.7', '0.8', '0.9'],
-#             ['0', '0.1', '0.2', '0.3', '0.4', '0.5', '0.6', '0.7', '0.8', '0.9'],
-#             ['0', '0.1', '0.2', '0.3', '0.4', '0.5', '0.6', '0.7', '0.8', '0.9']
-#         ]
-#
-#         radar = Radar(fig, tit, lab)
-#         radar.plot(metric_semep, linestyle='solid', linewidth=2, color='b', alpha=0.7,
-#                    label='SemEP')
-#         radar.plot(metric_met, linestyle='solid', linewidth=2, color='r', alpha=0.7,
-#                    label='METIS')
-#         radar.plot(metric_km, linestyle='solid', linewidth=2, color='g', alpha=0.7,
-#                    label='KMeans')
-#
-#         # if key == 'TransD':
-#         radar.ax.legend(loc=(0.15, 1.04), ncol=3, fontsize='large')
-#         fig.savefig('evaluation_metric/' + key + '.pdf', format='pdf', bbox_inches='tight')
-#         plt.close(fig)
+def extract_number_of_clusters(file_path):
+    with open(file_path, 'r') as file:
+        for line in file:
+            match = re.search(r'Number of cluster:\s*(\d+)', line)
+            if match:
+                return int(match.group(1))
+    return None
+
 
 def GenerateRadarPlot(model_list, threshold):
     cls_measure = 'clusteringMeasures/'
@@ -188,6 +137,8 @@ def GenerateRadarPlot(model_list, threshold):
             # except Exception:
             #     continue
             cls_measures_km = pd.read_csv(cls_address_km + model + '.txt', delimiter=",")
+            if extract_number_of_clusters(cls_measures_km)<2:
+                continue
             metric_semep = get_measure_values(cls_address, matrix_address, cls_measures_semep, metric_semep)
             # metric_met = get_measure_values(cls_address_metis, matrix_address, cls_measures_met, metric_met)
             metric_km = get_measure_values(cls_address_km, matrix_address, cls_measures_km, metric_km)
