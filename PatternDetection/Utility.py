@@ -26,7 +26,7 @@ def density_plot(list_sim, path_plot):
     standard_similarity = pd.DataFrame()
     standard_similarity.insert(0, 'similarity', list_sim)
     # fig, ax = plt.subplots()
-    sns.kdeplot(data=standard_similarity, x="similarity", shade=True, cut=0,
+    sns.kdeplot(data=standard_similarity, x="similarity", fill=True, cut=0,
                 bw_adjust=.1)  # ,hue='fold', legend=False,  bw_method=0.01  .25
     # move_legend(ax, "upper center")
     # plt.ylim(0,18)
@@ -246,7 +246,7 @@ def plot_cluster(num_cls, df, n, scale=False):
         scaler.fit(X)
         X = scaler.transform(X)
 
-    kmeans = KMeans(n_clusters=num_cls, random_state=0)
+    kmeans = KMeans(n_clusters=num_cls, random_state=0, n_init='auto')
     y_cluster = kmeans.fit_predict(X)
     new_df['cluster'] = y_cluster
     # cls_report = cluster_report(new_df.iloc[:, :-3], y_cluster)
