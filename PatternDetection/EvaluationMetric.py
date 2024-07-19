@@ -99,6 +99,7 @@ def radar_plot(metric_semep, metric_km, key):
     # ax.set_facecolor("linen")  # honeydew
     # Show the graph
     plt.savefig('evaluation_metric/' + key + '.pdf', format='pdf', bbox_inches='tight')
+    plt.show()
     plt.close()
 
 
@@ -196,6 +197,7 @@ def GenerateRadarPlot(model_list, threshold):
             #     f.write(str(metric_met) + "\n")
             with open('evaluation_metric/' + f_kmeans + model + '.txt', "w") as f:
                 f.write(str(metric_km) + "\n")
+            print(model+' -Threshold: '+str(th))
             radar_plot(metric_semep, metric_km, key=str(th) + model)
             # plt.cla()
 
