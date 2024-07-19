@@ -155,7 +155,7 @@ def get_kg(path_kg):
     return kg
 
 
-def get_target(kg, target, path_emb_patient, df_donor):
+def get_target(kg, target, df_donor):
     target_kg = kg.loc[kg.p == target]
     target_kg = target_kg.rename(columns={"s": "ClinicalRecord", "o": "Relapse"})
     target_kg = target_kg[['ClinicalRecord', 'Relapse']]
@@ -201,7 +201,7 @@ def run(kg_name, target_predicate, model_list, threshold):
                 real_df[col] = df_donor[col].apply(extract_real_part)
             df_donor = real_df.copy()
         """Load ClinicalRecord responses file"""
-        target = get_target(kg, target_predicate, path_model + m, df_donor)
+        target = get_target(kg, target_predicate, df_donor)
         """Labeling donors in the DataFrame"""
         df_donor = pd.merge(df_donor, target, on="ClinicalRecord")
         file_address = 'clusteringMeasures/' + m + '/'
