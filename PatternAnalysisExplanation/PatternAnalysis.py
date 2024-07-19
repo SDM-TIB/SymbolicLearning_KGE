@@ -68,7 +68,7 @@ def catplot(df_reset, model):
 def PCA_projection(kg_name, model, threshold):
     # Path to the PDF file
     pdf_path1 = '../Plots/' + kg_name + '/' + model + '/PCA.pdf'
-    pdf_path2 = '../Plots/' + kg_name + '/' + model + '/PCA_th_' + str(threshold[1]) + '.pdf'
+    pdf_path2 = '../Plots/' + kg_name + '/' + model + '/PCA_th_' + str(threshold) + '.pdf'
 
     # Open the PDF files
     fig1 = fitz.open(pdf_path1)
