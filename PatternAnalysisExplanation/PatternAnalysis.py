@@ -2,6 +2,7 @@ import pandas as pd
 import os
 import seaborn as sns
 import matplotlib.pyplot as plt
+import sys
 # Get the directory of the current script
 current_dir = os.path.dirname(os.path.abspath(__file__))
 # Define the relative path to the directory containing ComputeCommunities.py
