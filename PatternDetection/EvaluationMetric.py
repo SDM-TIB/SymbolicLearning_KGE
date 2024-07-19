@@ -137,7 +137,7 @@ def GenerateRadarPlot(model_list, threshold):
             # except Exception:
             #     continue
             cls_measures_km = pd.read_csv(cls_address_km + model + '.txt', delimiter=",")
-            if extract_number_of_clusters(cls_measures_km)<2:
+            if extract_number_of_clusters(cls_address_km + model + '.txt')<2:
                 continue
             metric_semep = get_measure_values(cls_address, matrix_address, cls_measures_semep, metric_semep)
             # metric_met = get_measure_values(cls_address_metis, matrix_address, cls_measures_met, metric_met)
