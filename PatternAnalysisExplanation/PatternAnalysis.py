@@ -41,7 +41,7 @@ def target_cluster(kg_name, model, target_predicate, cls_algorithm, th):
 def catplot(df_reset, model):
     g = sns.catplot(df_reset, kind="bar",
         x="cluster", y="count_values", hue='Relapse',
-                    height=6, aspect=1.2, palette=['#264653', '#2A9D8F', '#264669'])
+                    height=6, aspect=1.2, palette=['#264653', '#2A9D8F', '#E9C46A'])
     legend = g._legend  # Access the legend object
     # legend.set_title("Legend Title")  # Set the legend title
     # Set the legend's fontsize and other properties
