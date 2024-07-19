@@ -197,7 +197,7 @@ def GenerateRadarPlot(model_list, threshold):
             with open('evaluation_metric/' + f_kmeans + model + '.txt', "w") as f:
                 f.write(str(metric_km) + "\n")
             radar_plot(metric_semep, metric_km, key=str(th) + model)
-            plt.cla()
+            # plt.cla()
 
 
 
