@@ -245,10 +245,10 @@ def run(kg_name, target_predicate, model_list, threshold):
                 os.makedirs(path_plot)
             if len(entries) < 9:
                 new_df = Utility.plot_semEP(len(entries), sim_matrix.drop(['ClinicalRecord'], axis=1), path_plot, 'PCA_th_' + str(th) + 'matrix.pdf',
-                                            complex_numb, scale=False)
+                                            scale=False, show=False)
                 new_df[['Relapse', 'cluster']].to_csv(path_plot + 'th_' + str(th) + '_summary.csv')
                 Utility.plot_semEP(len(entries), df_donor.drop(columns=['ClinicalRecord']), path_plot, 'PCA_th_' + str(th) + '.pdf',
-                                   complex_numb, scale=False)
+                                   scale=False, show=False)
             df_donor.drop(columns=['cluster'], inplace=True)
     
             """Execute Kmeans"""
@@ -260,7 +260,7 @@ def run(kg_name, target_predicate, model_list, threshold):
             # num_cls = Utility.elbow_KMeans(sim_matrix.iloc[:, :-2], 1, 15, kmeans_address)  # df_donor
             # if num_cls is None:
             #     num_cls = 15
-            new_df, cls_report = Utility.plot_cluster(num_cls, sim_matrix, kmeans_address, scale=False)  # df_donor
+            new_df, cls_report = Utility.plot_cluster(num_cls, sim_matrix, kmeans_address, scale=False, show=False)  # df_donor
             new_df.to_csv(kmeans_address + 'cluster.csv', index=None)
             update_cluster_folder(kmeans_address)
             """Save Kmeans-Clusters"""
@@ -278,3 +278,27 @@ def run(kg_name, target_predicate, model_list, threshold):
         """Density of Donor Similarity"""
         Utility.density_plot(list_sim, path_plot)
 
+def PCA_projection(kg_name, model, target_predicate, cls_algorithm, th):
+    path_plot = '../Plots/' + kg_name + '/' + model + '/'
+    kg = SemCD.get_kg('../KG/' + kg_name + '/LungCancer.tsv')
+    """Load KGE model"""
+    path_model = '../KGEmbedding/' + kg_name + '/'
+    df_donor = pd.read_csv(path_model + model + '/embedding_donors.csv')
+    if model == 'RotatE':
+        # Create a new DataFrame to store real parts
+        real_df = pd.DataFrame()
+        # Iterate over columns of the original DataFrame
+        for col in df_donor.columns:
+            # Skip 'ClinicalRecord' column
+            if col == 'ClinicalRecord':
+                real_df[col] = df_donor[col]
+                continue
+            # Extract real parts and store in the new DataFrame
+            real_df[col] = df_donor[col].apply(extract_real_part)
+        df_donor = real_df.copy()
+    """Load ClinicalRecord responses file"""
+    target = get_target(kg, target_predicate, df_donor)
+    """Labeling donors in the DataFrame"""
+    df_donor = pd.merge(df_donor, target, on="ClinicalRecord")
+    """Visualize Donors"""
+    Utility.plot_treatment(df_donor, path_plot, True)

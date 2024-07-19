@@ -237,7 +237,7 @@ def cluster_report(data: pd.DataFrame, clusters):
     return report_df.sort_values(by='class_name')[['class_name', 'instance_count', 'rule_list']]
 
 
-def plot_cluster(num_cls, df, n, scale=False):
+def plot_cluster(num_cls, df, n, scale=False, show=False):
     new_df = df.copy()
     X = new_df.iloc[:, :-2]
     # To scale the data
@@ -283,12 +283,13 @@ def plot_cluster(num_cls, df, n, scale=False):
         # title and labels
         plt.title('Clusters of ClinicalRecords', loc='left', fontsize=22)
         plt.savefig(fname=n + "KMeans.pdf", format='pdf', bbox_inches='tight')
-        # plt.show()
+        if show:
+            plt.show()
         plt.close()
     return new_df, cls_report
 
 
-def plot_semEP(num_cls, df, path_plot, name, complex_numb, scale=False):
+def plot_semEP(num_cls, df, path_plot, name, scale=False, show=False):
     new_df = df.copy()
     X = new_df.iloc[:, :-2]
     # To scale the data
@@ -326,12 +327,13 @@ def plot_semEP(num_cls, df, path_plot, name, complex_numb, scale=False):
     # title and labels
     plt.title('Clusters of ClinicalRecords', loc='left', fontsize=22)
     plt.savefig(fname=path_plot + name, format='pdf', bbox_inches='tight')
-    #     plt.show()
+    if show:
+        plt.show()
     plt.close()
     return new_df
 
 
-def plot_treatment(df, name):
+def plot_treatment(df, name, show=False):
     new_df = df.copy()
     X = new_df.iloc[:, :-2]
     col = [mcolors.CSS4_COLORS['brown'], mcolors.CSS4_COLORS['lightcoral'], mcolors.CSS4_COLORS['olive'], mcolors.CSS4_COLORS['lime']]
@@ -386,5 +388,6 @@ def plot_treatment(df, name):
     plt.title('ClinicalRecords in P4-LUCAT', loc='left', fontsize=22)
     # plt.savefig(fname='Plots/PCA_KG_' + str(n) + ".png", format='png', bbox_inches='tight', dpi=300, transparent=True)
     plt.savefig(fname=name + 'PCA.pdf', format='pdf', bbox_inches='tight')
+    if show:
+        plt.show()
     plt.close()
-    # plt.show()

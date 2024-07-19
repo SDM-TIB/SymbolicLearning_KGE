@@ -3,6 +3,9 @@ import os
 import seaborn as sns
 import matplotlib.pyplot as plt
 import sys
+import fitz  # PyMuPDF
+from PIL import Image
+import io
 # Get the directory of the current script
 current_dir = os.path.dirname(os.path.abspath(__file__))
 # Define the relative path to the directory containing ComputeCommunities.py
@@ -60,3 +63,43 @@ def catplot(df_reset, model):
     # plt.savefig('Plots/Kmeans_norm_v2.pdf', bbox_inches='tight', format='pdf', transparent=True)
     # plt.savefig('Plots/METIS_norm_v2.pdf', bbox_inches='tight', format='pdf', transparent=True)
     plt.savefig(model+'.pdf', bbox_inches='tight', format='pdf', transparent=True)
+
+
+def PCA_projection(kg_name, model, threshold):
+    # Path to the PDF file
+    pdf_path1 = '../Plots/' + kg_name + '/' + model + '/PCA.pdf'
+    pdf_path2 = '../Plots/' + kg_name + '/' + model + '/PCA_th_' + str(threshold[1]) + '.pdf'
+
+    # Open the PDF files
+    fig1 = fitz.open(pdf_path1)
+    fig2 = fitz.open(pdf_path2)
+
+    # Select the page number (0-based index)
+    page_number1 = 0
+    page_number2 = 0
+
+    # Load the pages
+    page1 = fig1.load_page(page_number1)
+    page2 = fig2.load_page(page_number2)
+
+    # Render the pages to images
+    pix1 = page1.get_pixmap()
+    pix2 = page2.get_pixmap()
+
+    # Convert the images to PIL Images
+    img1 = Image.open(io.BytesIO(pix1.tobytes()))
+    img2 = Image.open(io.BytesIO(pix2.tobytes()))
+
+    # Plot the images side by side using Matplotlib
+    fig, axes = plt.subplots(1, 2, figsize=(15, 7))
+
+    # Display the first image
+    axes[0].imshow(img1)
+    axes[0].axis('off')  # Hide the axis
+    # axes[0].set_title('Figure 1')
+
+    # Display the second image
+    axes[1].imshow(img2)
+    axes[1].axis('off')  # Hide the axis
+    # axes[1].set_title('Figure 2')
+    plt.show()
