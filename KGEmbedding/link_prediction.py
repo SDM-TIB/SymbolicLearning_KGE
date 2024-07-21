@@ -4,7 +4,7 @@ from ranks import  tail_prediction, head_prediction
 import torch
 
 def main(args):
-    embedding_model = torch.load(args.results_path + args.model_name + '/trained_model.pkl')
+    embedding_model = torch.load(args.results_path + args.model_name + '/trained_model.pkl', map_location=torch.device('cpu'))
     pred = tail_prediction(embedding_model, args.head, args.relation, embedding_model.training)
 
     return pred
