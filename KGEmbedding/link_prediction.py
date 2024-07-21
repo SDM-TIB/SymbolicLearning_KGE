@@ -1,13 +1,16 @@
 import argparse
 import pandas as pd
-from ranks import  tail_prediction, head_prediction
+from ranks import  tail_prediction, head_prediction, load_dataset
 import torch
 
 def main(args):
     embedding_model = torch.load(args.results_path + args.model_name + '/trained_model.pkl', map_location=torch.device('cpu'))
-    pred = tail_prediction(embedding_model, args.head, args.relation, embedding_model.training)
-
+    training_triples, triple_data1, entity_label, relation_label = load_dataset(args.results_path +'/train')
+    pred = tail_prediction(embedding_model, args.head, args.relation, training_triples)
+    pred.to_csv(args.results_path + args.model_name + '/prediction_result.csv', index=False)
+    
     return pred
+
 
 
 if __name__ == "__main__":
