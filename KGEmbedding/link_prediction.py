@@ -12,7 +12,7 @@ def main(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Process some integers.")
-    parser.add_argument('--results', type=str, required=True, help='path to stored results of trained kge model')
+    parser.add_argument('--results_path', type=str, required=True, help='path to stored results of trained kge model')
     parser.add_argument('--model_name', type=str, required=True, help='name of kge model')
     parser.add_argument('--head', type=str, required=True, help='head entity')
     parser.add_argument('--relation', type=str, required=True, help='relation')

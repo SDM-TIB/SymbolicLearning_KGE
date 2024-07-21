@@ -25,7 +25,7 @@ def main(args):
     valid_triples.to_csv(f'{args.output_dir}/valid', index=False, header=False, sep='\t')
 
     for model_name in args.models:
-        model, results = create_model(tf_training=training, tf_testing=testing, embedding=model_name, n_epoch=150, path=args.results_path)
+        model, results = create_model(tf_training=training, tf_testing=testing, embedding=model_name, n_epoch=100, path=args.results_path)
         entity_representation_tensor, relation_embedding_tensor = get_learned_embeddings(model)
         plotting(results, model_name, args.results_path)
         patient = dataframe_embedding_donors(entity_representation_tensor, training, args.dataset_path, args.results_path)
