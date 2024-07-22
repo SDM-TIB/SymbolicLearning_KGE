@@ -272,7 +272,7 @@ def run(kg_name, target_predicate, model_list, threshold):
                                           index=['No_Progression', 'Progression', 'Relapse',
            'UnKnown'])
             cluster_statistics(new_df, cls_statistics, num_cls, kmeans_address)
-        print('Community Detection by SemEP and Kmeans, considering ' +m+ ' model and threshold '+ str(th)+ ' done.')
+            print('Community Detection by SemEP and Kmeans, considering ' +m+ ' model and threshold '+ str(th)+ ' done.')
 
         """Visualize Donors"""
         Utility.plot_treatment(df_donor, path_plot)
