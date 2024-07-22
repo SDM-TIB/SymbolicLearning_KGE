@@ -118,7 +118,7 @@ def plot_statistics(name):
     values = [triples.shape[0], len(relation), len(entity)]
 
     plt.figure(figsize=(8, 6))
-    plt.bar(categories, values, color=['#264653', '#2A9D8F', '#E9C46A'])
+    bars = plt.bar(categories, values, color=['#264653', '#2A9D8F', '#E9C46A'])
     # Add labels on top of each bar
     for bar in bars:
         yval = bar.get_height()
