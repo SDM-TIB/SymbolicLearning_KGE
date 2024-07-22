@@ -119,7 +119,10 @@ def plot_statistics(name):
 
     plt.figure(figsize=(8, 6))
     plt.bar(categories, values, color=['#264653', '#2A9D8F', '#E9C46A'])
-#     plt.xlabel('Categories')
+    # Add labels on top of each bar
+    for bar in bars:
+        yval = bar.get_height()
+        plt.text(bar.get_x() + bar.get_width() / 2, yval + 50, int(yval), ha='center', va='bottom')
     plt.ylabel('Amount')
     plt.title('Statistics of '+name)
     plt.show()
