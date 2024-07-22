@@ -87,7 +87,7 @@ def matrix_similarity(embedding, th, complex_numb):
     # Extract the lower diagonal values (excluding zeros)
     lower_diag_values = lower_triangular[lower_triangular != 0]
     threshold = np.percentile(lower_diag_values, th)
-    print("percentil", threshold)
+    # print("percentil", threshold)
     return similarity_df, threshold, lower_diag_values
 
 
