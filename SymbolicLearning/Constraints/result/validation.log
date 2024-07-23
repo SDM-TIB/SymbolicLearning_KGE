@@ -1,0 +1,34 @@
+Node order: ['<http://example.org/lungCancer/shapes/Protocol1>']
+
+
+>>>>>
+Retrieving (next) targets ...
+Evaluating target query for <http://example.org/lungCancer/shapes/Protocol1>:
+
+SELECT ?x WHERE { ?x a <http://example.org/lungCancer/entity/Patient> }
+elapsed: 44.07763671875 ms
+
+Number of targets retrieved: 1242
+
+Evaluating query for http://example.org/lungCancer/shapes/Protocol1_d1_c1:
+
+                SELECT ($this AS ?this)
+                WHERE {
+                    $this <http://example.org/lungCancer/entity/hasBiomarker> <http://example.org/lungCancer/entity/EGFR_Positive> .
+                    FILTER EXISTS {$this <http://example.org/lungCancer/entity/patientDrug> <http://example.org/lungCancer/entity/Nivolumab> .}
+                }
+elapsed: 8064.529541015625 ms
+
+Number of solution mappings: 14
+
+
+>>>>> Starting validation of shape: <http://example.org/lungCancer/shapes/Protocol1>
+Starting saturation ...
+saturation ...
+elapsed: 0.0 ms
+Remaining targets: 0
+
+Maximal number or rules in memory: 0
+Total number of rules: 0
+Valid targets: 1228
+Invalid targets: 14
