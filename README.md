@@ -1,7 +1,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 ## Symbolic Learning and KG Embeddings with Link Prediction and Community Detection
-The objective of this workshop is to highlight the impact of symbolic learning over various downstream KG embeddings tasks such as Link Prediction (LP) and Community Detection. For reproducibility, follow the instructions provided in the slides[https://docs.google.com/presentation/d/14EOHzqKmI2KpseAif_GWtCi2cBEb1ksTlZMVVqFy9cQ/edit?usp=drive_link]. If running locally, then follow the steps below. 
+The objective of this workshop is to highlight the impact of symbolic learning over various downstream KG embeddings tasks such as Link Prediction (LP) and Community Detection. For reproducibility, follow the instructions provided in the [slides](https://docs.google.com/presentation/d/14EOHzqKmI2KpseAif_GWtCi2cBEb1ksTlZMVVqFy9cQ/edit?usp=drive_link). If running locally, then follow the steps below. 
 
 
 ### Symbolic Learning
