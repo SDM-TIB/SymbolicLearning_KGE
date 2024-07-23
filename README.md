@@ -5,7 +5,26 @@
 
 
 
+### Symbolic Learning
+Follow the instructions to execute symbolic learning to generate enriched, and Tranformed KG.
 
+```json
+{
+  "KG": "OriginalKG",
+  "prefix": "http://example.org/lungCancer/entity/",
+  "rules_file": "LungCancer-rules-short.csv",
+  "rdf_file": "LungCancer.nt",
+  "constraints_folder": "Constraints"
+}
+```
+
+```python
+python symbolic_predictions.py
+```
+### Knowledge Graph Embeddings and Link Prediction
+
+
+### Community Detection
 
 
 
