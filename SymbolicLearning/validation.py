@@ -1,6 +1,12 @@
 from TravSHACL import parse_heuristics, GraphTraversal, ShapeSchema
+import os
+import shutil
 
 def travshacl(enrichedKG, constraints):
+    folder_name = './Constraints/result/'
+    if os.path.exists(folder_name):
+        shutil.rmtree(folder_name)
+
     prio_target = 'TARGET'  # shapes with target definition are preferred, alternative value: ''
     prio_degree = 'IN'  # shapes with a higher in-degree are prioritized, alternative value 'OUT'
     prio_number = 'BIG'  # shapes with many constraints are evaluated first, alternative value 'SMALL'
