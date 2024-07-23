@@ -276,12 +276,12 @@ def plot_cluster(num_cls, df, n, scale=False, show=False):
 
         # create a list of legend elemntes
         ## markers / records
-        legend_elements = [Line2D([0], [0], marker='o', color='w', label='Cluster {}'.format(i + 1),
+        legend_elements = [Line2D([0], [0], marker='o', color='w', label='Community {}'.format(i + 1),
                                   markerfacecolor=mcolor, markersize=10) for i, mcolor in enumerate(col)]
         # plot legend
         plt.legend(handles=legend_elements, loc='upper right', fontsize=16)
         # title and labels
-        plt.title('Clusters of ClinicalRecords', loc='left', fontsize=22)
+        plt.title('Communities of ClinicalRecords', loc='left', fontsize=22)
         plt.savefig(fname=n + "KMeans.pdf", format='pdf', bbox_inches='tight')
         if show:
             plt.show()
@@ -320,12 +320,12 @@ def plot_semEP(num_cls, df, path_plot, name, scale=False, show=False):
 
     # create a list of legend elemntes
     ## markers / records
-    legend_elements = [Line2D([0], [0], marker='o', color='w', label='Cluster {}'.format(i + 1),
+    legend_elements = [Line2D([0], [0], marker='o', color='w', label='Community {}'.format(i + 1),
                               markerfacecolor=mcolor, markersize=10) for i, mcolor in enumerate(col)]
     # plot legend
     plt.legend(handles=legend_elements, loc='upper right', fontsize=16)
     # title and labels
-    plt.title('Clusters of ClinicalRecords', loc='left', fontsize=22)
+    plt.title('Communities of ClinicalRecords', loc='left', fontsize=22)
     plt.savefig(fname=path_plot + name, format='pdf', bbox_inches='tight')
     if show:
         plt.show()

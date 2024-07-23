@@ -30,7 +30,7 @@ def target_cluster(kg_name, model, target_predicate, cls_algorithm, th):
     for file in entries:
         cls = pd.read_csv(path + file, delimiter="\t", header=None)
         cls.columns = ['ClinicalRecord']
-        target.loc[target.ClinicalRecord.isin(cls.ClinicalRecord), 'cluster'] = 'Cluster ' + file[:-4].split('-')[1]
+        target.loc[target.ClinicalRecord.isin(cls.ClinicalRecord), 'Community'] = 'Community ' + file[:-4].split('-')[1]
         list_donor = list_donor + list(cls.ClinicalRecord)
 
     target = target.loc[target.ClinicalRecord.isin(list_donor)]
@@ -43,7 +43,7 @@ def target_cluster(kg_name, model, target_predicate, cls_algorithm, th):
 
 def catplot(df_reset, model):
     g = sns.catplot(df_reset, kind="bar",
-        x="cluster", y="count_values", hue='Relapse',
+        x="Community", y="count_values", hue='Relapse',
                     height=6, aspect=1.2, palette=['#264653', '#2A9D8F', '#E9C46A'])
     legend = g._legend  # Access the legend object
     # legend.set_title("Legend Title")  # Set the legend title
@@ -56,7 +56,7 @@ def catplot(df_reset, model):
     legend.set_bbox_to_anchor((0.6, 0.85))  # Adjust the position as needed
 
     g.set_axis_labels("", "Normalized Clinical Records", fontsize=16)
-    plt.title('Distribution of Relapse by Cluster', fontsize=16)
+    plt.title('Distribution of Relapse by Community', fontsize=16)
     # ax.set_ylabel("Parameter values",fontsize=16)
     plt.tick_params(labelsize=16)
     plt.ylim(0, .9)
