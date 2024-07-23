@@ -128,7 +128,7 @@ def rdflib_query(rule_df, prefix_query, rdf_data,head_val, predictions_folder):
     if not os.path.exists(predictions_folder):
         os.makedirs(predictions_folder)
     # Serialize the graph to N-Triples format and save to a new file
-    enrichedKG = predictions_folder + "-Enriched_KG.nt"
+    enrichedKG = '../KG/EnrichedKG/Enriched_KG.nt'
     g.serialize(destination=enrichedKG, format='nt')
     print(f"Enriched knowledge graph saved to {enrichedKG}")
     result_df.to_csv(predictions_folder + f'/{head_val}.tsv', sep='\t', index=False, header=None)
@@ -152,10 +152,10 @@ def initialize(input_config):
     with open(input_config, "r") as input_file_descriptor:
         input_data = json.load(input_file_descriptor)
     prefix = input_data['prefix']
-    path = './KG/'+input_data['KG']
+    path = '../KG/'+input_data['KG']
     rules = './Rules/'+ input_data['rules_file']
     rdf = path +"/"+ input_data['rdf_file']
-    predictions_folder = './Predictions/' + input_data['KG'] +"_predictions"
+    predictions_folder = './Predictions/'
     constraints = './'+ input_data['constraints_folder']
 
     return prefix, rules, rdf, path, predictions_folder, constraints

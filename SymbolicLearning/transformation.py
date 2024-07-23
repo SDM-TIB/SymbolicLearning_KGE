@@ -124,7 +124,7 @@ def transform(enrichedKG):
     # File paths
     shacl_shapes_file = 'Constraints/LungCancer-shapes.ttl'
     shacl_violation_report = 'Constraints/result/validationReport.ttl'
-    output_kg_file = './TransformedKG.nt'
+    output_kg_file = '../KG/TransformedKG/TransformedKG.nt'
     shacl_valid_report = 'Constraints/result/targets_valid.log'
 
     violations, patterns = transform_shacl_shapes(shacl_shapes_file, shacl_violation_report)

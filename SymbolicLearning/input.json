@@ -1,7 +1,7 @@
 {
-  "KG": "LungCancer",
+  "KG": "OriginalKG",
   "prefix": "http://example.org/lungCancer/entity/",
   "rules_file": "LungCancer-rules-short.csv",
-  "rdf_file": "LungCancer-exp-corrupted.nt",
+  "rdf_file": "LungCancer.nt",
   "constraints_folder": "Constraints"
 }
