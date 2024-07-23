@@ -6,7 +6,7 @@
 
 
 ### Symbolic Learning
-Follow the instructions to execute symbolic learning to generate enriched, and Tranformed KG.
+Follow the instructions to execute symbolic learning to generate Enriched, and Transformed KG.
 
 ```json
 {
@@ -23,7 +23,9 @@ python symbolic_predictions.py
 ```
 ### Knowledge Graph Embeddings and Link Prediction
 
-
+```python
+python SymbolicLearning_KGE/KGEmbedding/kge.py --dataset_path "SymbolicLearning_KGE/KG/OriginalKG/LungCancer.tsv" --output_dir "SymbolicLearning_KGE/KGEmbedding/OriginalKG" --results_path "SymbolicLearning_KGE/KGEmbedding/OriginalKG/" --models TransH
+ ```
 ### Community Detection
 
 
