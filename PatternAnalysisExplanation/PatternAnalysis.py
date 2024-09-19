@@ -30,7 +30,8 @@ def target_cluster(kg_name, model, target_predicate, cls_algorithm, th):
     for file in entries:
         cls = pd.read_csv(path + file, delimiter="\t", header=None)
         cls.columns = ['ClinicalRecord']
-        target.loc[target.ClinicalRecord.isin(cls.ClinicalRecord), 'Community'] = 'Community ' + file[:-4].split('-')[1]
+        n = int(file[:-4].split('-')[1]) + 1
+        target.loc[target.ClinicalRecord.isin(cls.ClinicalRecord), 'Community'] = 'Community ' + str(n)
         list_donor = list_donor + list(cls.ClinicalRecord)
 
     target = target.loc[target.ClinicalRecord.isin(list_donor)]
