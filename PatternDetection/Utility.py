@@ -354,33 +354,10 @@ def plot_treatment(df, name, show=False):
 
     scatter = mscatter(dim_reduction[:, 0], dim_reduction[:, 1], c=new_df.c, s=50)  # , m=new_df.label
 
-    #     vocab = list(new_df.donor.values)
-    #     for i, word in enumerate(vocab):
-    #         plt.annotate(word, xy=(dim_reduction[i, 0], dim_reduction[i, 1]))
-
     # create a list of legend elemntes
     ## markers / records
     legend_elements = [Line2D([0], [0], marker='o', color='w', label=key,
                               markerfacecolor=mcolor, markersize=10) for key, mcolor in color_dictionary.items()]
-    #     legend_elements = []
-    #     new_df = new_df[['response', 'label', 'c']]
-    #     new_df.drop_duplicates(inplace=True)
-    #     # print(new_df)
-    #     for index, row in new_df.iterrows():
-    #         if row.label == 'o':
-    #             if row.response == 'effective':
-    #                 legend_elements.append(Line2D([0], [0], marker='o', color='w', label='test_'+row.response,
-    #                                               markerfacecolor=row.c, markersize=8))
-    #             else:
-    #                 legend_elements.append(Line2D([0], [0], marker='o', color='w', label='test_' + row.response,
-    #                                               markerfacecolor=row.c, markersize=8))
-    #         else:
-    #             if row.response == 'effective':
-    #                 legend_elements.append(Line2D([0], [0], marker='*', color='w', label='train_'+row.response,
-    #                                               markerfacecolor=row.c, markersize=8))
-    #             else:
-    #                 legend_elements.append(Line2D([0], [0], marker='*', color='w', label='train_' + row.response,
-    #                                               markerfacecolor=row.c, markersize=8))
 
     # plot legend
     plt.legend(handles=legend_elements, loc='lower left', fontsize=12)
